@@ -1,34 +1,40 @@
 import { useEffect, useState } from 'react';
 //import axios from 'axios';
 
+// Интерфейс для задачи
+interface Task {
+  title: string;
+}
+
 const App = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // Определяет, сколько блоков задач мы уже показали
-  const [current, setCurrent] = useState(1); // номер страницы
+  const [current, setCurrent] = useState<number>(1); // номер страницы
 
-  const taskList = [
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
-    'Task 1',
-    'Task 2',
-    'Task 3',
+  // Список задач с типом Task[]
+  const taskList: Task[] = [
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
+    { title: 'Task 1' },
+    { title: 'Task 2' },
+    { title: 'Task 3' },
   ];
 
   // Сколько задач показываем за одну "страницу"
@@ -38,26 +44,26 @@ const App = () => {
   // Берём с начала списка до (current * 10)
   // Если current = 1 → показываем 10 задач
   // Если current = 2 → показываем 20 задач
-  const tasksToShow = taskList.slice(0, current * TASKS_PER_PAGE);
+  const tasksToShow: Task[] = taskList.slice(0, current * TASKS_PER_PAGE);
 
   // Обработчик прокрутки страницы
-  const scrollHandler = (e) => {
+  const scrollHandler = () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
     // Проверяем, насколько пользователь близко к низу страницы
     // scrollHeight — общая высота документа
     // scrollTop — сколько уже проскроллили
     // window.innerHeight — высота видимой области
     // Если до низа осталось меньше 100px → срабатываем
-    if (
-      e.target.documentElement.scrollHeight -
-        (e.target.documentElement.scrollTop + window.innerHeight) <
-      100
-    ) {
+    if (scrollHeight - (scrollTop + windowHeight) < 100) {
+      console.log('1111');
       // Проверяем, есть ли ещё задачи для показа
       if (tasksToShow.length < taskList.length) {
-        // Увеличиваем номер страницы
-        // Это вызовет перерендер
-        // И tasksToShow станет больше
-        setCurrent((prev) => prev + 1);
+        console.log('222');
+        // Увеличиваем номер страницы — это вызовет перерендер
+        setCurrent((prev: number) => prev + 1);
       }
     }
   };
@@ -157,7 +163,7 @@ const App = () => {
       </div>
       <ul className="todo__list">
         {tasksToShow.map((task, index) => (
-          <li className="todo__item todo-item" key={index}>
+          <li className="todo__item todo-item" key={`${task}-${index}`}>
             <input
               className="todo-item__checkbox"
               id="task-1"
@@ -165,7 +171,7 @@ const App = () => {
               defaultChecked
             />
             <label className="todo-item__label" htmlFor="task-1">
-              {task}
+              {task.title}
             </label>
             <button
               className="todo-item__delete-button"
