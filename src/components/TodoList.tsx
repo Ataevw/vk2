@@ -1,41 +1,21 @@
 import { useEffect, useState } from 'react';
 import TodoItem from './TodoItem.js';
 
-// Интерфейс для задачи
 interface Task {
+  id: string;
   title: string;
+  isDone: boolean;
 }
 
-const TodoList = () => {
+interface TodoListProps {
+  taskList: Task[];
+}
+
+const TodoList = ({ taskList }: TodoListProps) => {
   const hasTasks: boolean = true;
 
   // Определяет, сколько блоков задач мы уже показали
   const [current, setCurrent] = useState<number>(1); // номер страницы
-
-  // Список задач с типом Task[]
-  const taskList: Task[] = [
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-    { title: 'Task 1' },
-    { title: 'Task 2' },
-    { title: 'Task 3' },
-  ];
 
   // Сколько задач показываем за одну "страницу"
   const TASKS_PER_PAGE = 10;
@@ -89,8 +69,8 @@ const TodoList = () => {
 
   return (
     <ul className="todo__list">
-      {tasksToShow.map((task, index) => (
-        <TodoItem task={task} key={`${task.title}-${index}`} />
+      {tasksToShow.map((task) => (
+        <TodoItem {...task} key={task.id} />
       ))}
     </ul>
   );
