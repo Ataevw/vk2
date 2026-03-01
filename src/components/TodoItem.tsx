@@ -3,14 +3,27 @@ interface TodoItemProps {
   id: string;
   title: string;
   isDone: boolean;
+  onDeleteTaskButtonClick: (taskId: string) => void;
+  onTaskCompleteChange: (taskId: string, isDone: boolean) => void;
 }
 
 const TodoItem = (props: TodoItemProps) => {
-  const { id, title, className, isDone } = props;
+  const {
+    id,
+    title,
+    className,
+    onDeleteTaskButtonClick,
+    onTaskCompleteChange,
+  } = props;
 
   return (
-    <li className={`todo-item${className ? ' ' + className : ''}`}>
-      <input className="todo-item__checkbox" id={id} type="checkbox" readOnly />
+    <li className={`todo-item ${className ?? ''}`}>
+      <input
+        className="todo-item__checkbox"
+        id={id}
+        type="checkbox"
+        onChange={({ target }) => onTaskCompleteChange(id, target.checked)}
+      />
       <label className="todo-item__label" htmlFor={id}>
         {title}
       </label>
@@ -18,6 +31,7 @@ const TodoItem = (props: TodoItemProps) => {
         className="todo-item__delete-button"
         aria-label="Delete"
         title="Delete"
+        onClick={() => onDeleteTaskButtonClick(id)}
       >
         <svg
           width="20"

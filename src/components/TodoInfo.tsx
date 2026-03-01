@@ -1,5 +1,11 @@
-const TodoInfo = (props: any) => {
-  const { total, done } = props;
+interface TodoInfoProps {
+  total: number;
+  done: number;
+  onDeleteAllButtonClick: () => void; // тип возвращаемого значения. В данном случае функция ничего не возвращает.
+}
+
+const TodoInfo = (props: TodoInfoProps) => {
+  const { total, done, onDeleteAllButtonClick } = props;
 
   const hasTasks = total > 0;
 
@@ -9,7 +15,11 @@ const TodoInfo = (props: any) => {
         Done {done} from {total}
       </div>
       {hasTasks && (
-        <button className="todo__delete-all-button" type="button">
+        <button
+          className="todo__delete-all-button"
+          type="button"
+          onClick={onDeleteAllButtonClick}
+        >
           Delete all
         </button>
       )}

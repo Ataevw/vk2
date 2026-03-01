@@ -2,14 +2,16 @@ interface FieldProps {
   className?: string;
   id: string;
   label: string;
+  value?: string;
   type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
+  onInput?: (query: string) => void;
 }
 
 const Field = (props: FieldProps) => {
-  const { className, id, label, type = 'text' } = props;
+  const { className, id, label, value, type = 'text', onInput } = props;
 
   return (
-    <div className={`field${className ? ' ' + className : ''}`}>
+    <div className={`field ${className ?? ''}`}>
       <label className="field__label" htmlFor={id}>
         {label}
       </label>
@@ -19,6 +21,10 @@ const Field = (props: FieldProps) => {
         placeholder=" "
         autoComplete="off"
         type={type}
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onInput?.(e.target.value)
+        }
       />
     </div>
   );

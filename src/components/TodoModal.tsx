@@ -1,6 +1,12 @@
 import { useState } from 'react';
 
-const TodoModal = () => {
+interface TodoModalProps {
+  onOpenModal: () => void;
+}
+
+const TodoModal = (props: TodoModalProps) => {
+  const { onOpenModal } = props;
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div>
@@ -9,6 +15,7 @@ const TodoModal = () => {
         onClick={(e) => {
           e.preventDefault();
           setIsOpen(true);
+          onOpenModal();
         }}
       >
         Ссылка
@@ -18,6 +25,7 @@ const TodoModal = () => {
           className="modal"
           onClick={() => {
             setIsOpen(false);
+            onOpenModal();
           }}
         >
           <div
@@ -32,6 +40,7 @@ const TodoModal = () => {
               type="submit"
               onClick={() => {
                 setIsOpen(false);
+                onOpenModal();
               }}
             >
               Закрыть
