@@ -1,8 +1,12 @@
 import Todo from './components/Todo.js';
-//import axios from 'axios';
+import { TasksProvider } from './context/TasksContext.js';
 
 const App = () => {
-  return <Todo />;
+  return (
+    <TasksProvider>
+      <Todo />
+    </TasksProvider>
+  );
 };
 
 export default App;
