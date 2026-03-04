@@ -5,10 +5,11 @@ interface FieldProps {
   value?: string;
   type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
   onInput?: (query: string) => void;
+  ref?: React.RefObject<HTMLInputElement | null>;
 }
 
 const Field = (props: FieldProps) => {
-  const { className, id, label, value, type = 'text', onInput } = props;
+  const { className, id, label, value, type = 'text', onInput, ref } = props;
 
   return (
     <div className={`field ${className ?? ''}`}>
@@ -21,6 +22,7 @@ const Field = (props: FieldProps) => {
         placeholder=" "
         autoComplete="off"
         type={type}
+        ref={ref}
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onInput?.(e.target.value)
