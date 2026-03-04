@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface TodoInfoProps {
   total: number;
   done: number;
@@ -27,4 +29,4 @@ const TodoInfo = (props: TodoInfoProps) => {
   );
 };
 
-export default TodoInfo;
+export default memo(TodoInfo);

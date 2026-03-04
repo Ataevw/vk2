@@ -1,20 +1,22 @@
 import Field from './Field.js';
 
 interface SearchTaskFormProps {
-  onSearchInput: (query: string) => void;
+  searchQuery: string;
+  setSearchQuery: (searchQuery: string) => void;
 }
 
 const SearchTaskForm = (props: SearchTaskFormProps) => {
-  const { onSearchInput } = props;
+  const { searchQuery, setSearchQuery } = props;
 
   return (
-    <form className="todo__form" onSubmit={(event) => event.preventDefault() }>
+    <form className="todo__form" onSubmit={(event) => event.preventDefault()}>
       <Field
         className="todo__field"
         id="search-task"
         label="Search task"
         type="search"
-        onInput={(query) => onSearchInput(query)}
+        value={searchQuery}
+        onInput={(query) => setSearchQuery(query)}
       />
     </form>
   );
