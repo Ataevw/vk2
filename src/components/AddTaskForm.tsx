@@ -1,20 +1,15 @@
+import { useContext } from 'react';
 import Button from './Buttons.js';
 import Field from './Field.js';
+import { TasksContext } from '../context/TasksContext.js';
 
-interface AddTaskFormProps {
-  addTask: () => void;
-  newTaskInputRef: React.RefObject<HTMLInputElement | null>;
-  newTaskTitle: string;
-  setNewTaskTitle: (newTitle: string) => void;
-}
-
-const AddTaskForm = (props: AddTaskFormProps) => {
+const AddTaskForm = () => {
   const {
     addTask,
     newTaskTitle,
     setNewTaskTitle,
     newTaskInputRef,
-  } = props;
+  } = useContext(TasksContext);
 
   const onSubmit = (event: any) => {
     event.preventDefault(); // чтобы не перезагружать страницу, останавливаем браузерное поведение!

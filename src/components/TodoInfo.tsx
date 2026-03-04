@@ -1,15 +1,15 @@
-import { memo } from 'react';
+import { memo, useContext, useMemo } from 'react';
+import { TasksContext } from '../context/TasksContext.js';
 
-interface TodoInfoProps {
-  total: number;
-  done: number;
-  onDeleteAllButtonClick: () => void; // тип возвращаемого значения. В данном случае функция ничего не возвращает.
-}
+const TodoInfo = () => {
+  const { tasks, deleteAllTasks } = useContext(TasksContext);
 
-const TodoInfo = (props: TodoInfoProps) => {
-  const { total, done, onDeleteAllButtonClick } = props;
-
+  const total = tasks.length;
   const hasTasks = total > 0;
+  const done = useMemo(
+    () => tasks.filter(({ isDone }) => isDone).length,
+    [tasks],
+  );
 
   return (
     <div className="todo__info">
@@ -20,7 +20,7 @@ const TodoInfo = (props: TodoInfoProps) => {
         <button
           className="todo__delete-all-button"
           type="button"
-          onClick={onDeleteAllButtonClick}
+          onClick={deleteAllTasks}
         >
           Delete all
         </button>

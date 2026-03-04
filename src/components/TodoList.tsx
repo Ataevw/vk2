@@ -1,29 +1,12 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import TodoItem from './TodoItem.js';
+import { TasksContext } from '../context/TasksContext.js';
 
-interface Task {
-  id: string;
-  title: string;
-  isDone: boolean;
-}
-
-interface TodoListProps {
-  tasksToShow: Task[]; // массив задачь
-  onDeleteTaskButtonClick: (taskId: string) => void;
-  onTaskCompleteChange: (taskId: string, isDone: boolean) => void;
-  filteredTasks: Task[] | null;
-  firstIncompliteTaskRef: React.RefObject<HTMLLIElement | null>;
-  firstIncompliteTaskId: string | undefined;
-}
-
-const TodoList = ({
-  onDeleteTaskButtonClick,
-  onTaskCompleteChange,
-  tasksToShow,
-  filteredTasks,
-  firstIncompliteTaskRef,
-  firstIncompliteTaskId,
-}: TodoListProps) => {
+const TodoList = () => {
+  const {
+    tasksToShow,
+    filteredTasks
+  } = useContext(TasksContext);
   const hasTasks: boolean = tasksToShow.length > 0;
   const isEmptyFilteredTasks: boolean = filteredTasks?.length === 0;
 
@@ -40,15 +23,7 @@ const TodoList = ({
   return (
     <ul className="todo__list">
       {(filteredTasks ?? tasksToShow).map((task) => (
-        <TodoItem
-          {...task}
-          key={task.id}
-          onDeleteTaskButtonClick={onDeleteTaskButtonClick}
-          onTaskCompleteChange={onTaskCompleteChange}
-          ref={
-            task.id === firstIncompliteTaskId ? firstIncompliteTaskRef : null
-          }
-        />
+        <TodoItem {...task} key={task.id} />
       ))}
     </ul>
   );

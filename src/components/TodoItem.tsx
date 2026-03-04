@@ -1,61 +1,54 @@
-import React, { memo } from 'react';
+import { memo, useContext } from 'react';
+import { TasksContext } from '../context/TasksContext.js';
 
 interface TodoItemProps {
   className?: string;
   id: string;
   title: string;
   isDone: boolean;
-  onDeleteTaskButtonClick: (taskId: string) => void;
-  onTaskCompleteChange: (taskId: string, isDone: boolean) => void;
-  ref: React.Ref<HTMLLIElement>;
 }
 
-const TodoItem = React.forwardRef<HTMLLIElement, TodoItemProps>(
-  (props, ref) => {
-    const {
-      id,
-      title,
-      className,
-      onDeleteTaskButtonClick,
-      onTaskCompleteChange,
-    } = props;
+const TodoItem = (props: TodoItemProps) => {
+  const { id, title, className, isDone } = props;
+  const { toggleTaskComplete, deleteTask, firstIncompliteTaskRef, firstIncompliteTaskId } =
+    useContext(TasksContext);
 
-    return (
-      <li className={`todo-item ${className ?? ''}`} ref={ref}>
-        <input
-          className="todo-item__checkbox"
-          id={id}
-          type="checkbox"
-          onChange={({ target }) => onTaskCompleteChange(id, target.checked)}
-        />
-        <label className="todo-item__label" htmlFor={id}>
-          {title}
-        </label>
-        <button
-          className="todo-item__delete-button"
-          aria-label="Delete"
-          title="Delete"
-          onClick={() => onDeleteTaskButtonClick(id)}
+  return (
+    <li className={`todo-item ${className ?? ''}`} ref={id === firstIncompliteTaskId ? firstIncompliteTaskRef : null}>
+      <input
+        className="todo-item__checkbox"
+        id={id}
+        type="checkbox"
+        checked={isDone}
+        onChange={({ target }) => toggleTaskComplete(id, target.checked)}
+      />
+      <label className="todo-item__label" htmlFor={id}>
+        {title}
+      </label>
+      <button
+        className="todo-item__delete-button"
+        aria-label="Delete"
+        title="Delete"
+        onClick={() => deleteTask(id)}
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M15 5L5 15M5 5L15 15"
-              stroke="#757575"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </li>
-    );
-  },
-);
+          <path
+            d="M15 5L5 15M5 5L15 15"
+            stroke="#757575"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    </li>
+  );
+};
 
 export default memo(TodoItem);
